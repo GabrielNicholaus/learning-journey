@@ -1,0 +1,64 @@
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo-wrap" routerLink="/hierarchy" style="cursor:pointer;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Intel_logo_%282022%2C_white_blue%29.png/1280px-Intel_logo_%282022%2C_white_blue%29.png" alt="Intel" /></a>
+  <span class="app-title">HIERARCHY MANAGEMENT</span>
+  <ul class="nav-links">
+    <li class="dropdown">
+      <span>CCB <span class="dropdown-arrow">▾</span></span>
+      <div class="dropdown-menu">
+        <a routerLink="/hierarchy/ccb-history">CCB History</a>
+        <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">New CCB Request</a>
+      </div>
+    </li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Hierarchies</a></li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Search</a></li>
+    <li><a routerLink="/hierarchy/owners">Hierarchy Owners</a></li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Hierarchy Manager</a></li>
+    @if (isAdmin()) {
+      <li class="dropdown">
+        <span>Admin <span class="dropdown-arrow">▾</span></span>
+        <div class="dropdown-menu">
+          <a routerLink="/hierarchy/admin/owners">Hierarchy Owners</a>
+          <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">User Management</a>
+        </div>
+      </li>
+    }
+  </ul>
+  <div class="nav-right">
+    <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Get Help</a>
+    <a routerLink="/logout">Sign-Out</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    @for (i of squares; track i) { <div class="sq"></div> }
+  </div>
+  <div class="hero-content">
+    <h1>Hierarchy<br>Management</h1>
+    <p class="welcome">Welcome Admin !</p>
+    <p class="vpn-note">Please ensure you are connected to the Intel network or VPN before<br>using the application.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Company Overview</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Contact Intel</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Newsroom</a>
+    <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Investors</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Careers</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Corporate Responsibility</a>
+    <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Diversity &amp; Inclusion</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Public Policy</a>
+  </div>
+  <div class="footer-legal">
+    <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">© Intel Corporation</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Terms of Use</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">*Trademarks</a>
+    <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Cookies</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Privacy</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Supply Chain Transparency</a><span>Site Map</span>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-logo">
+      <img src="https://b2928487.smushcdn.com/2928487/wp-content/uploads/2022/10/Intel-logo.png?lossy=1&strip=1&webp=1" alt="Intel" />
+    </div>
+    <p class="footer-disclaimer">
+      Intel technologies may require enabled hardware, software or service activation. // No product or component can be absolutely secure. // Your costs and results may vary. // Performance varies by use, configuration and other factors. // See our complete legal <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Notices and Disclaimers</a>. // Intel is committed to respecting human rights and avoiding complicity in human rights abuses. See Intel's <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Global Human Rights Principles</a>.
+    </p>
+  </div>
+</footer>

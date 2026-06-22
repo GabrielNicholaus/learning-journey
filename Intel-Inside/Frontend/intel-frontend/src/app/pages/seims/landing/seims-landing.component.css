@@ -1,0 +1,55 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:host { display: flex; flex-direction: column; font-family: 'Arial', 'Helvetica Neue', sans-serif; background: #e8ecf0; min-height: 100vh; }
+
+.topnav { background: #3777bc; height: 52px; display: flex; align-items: center; padding: 0 20px; position: fixed; top: 0; left: 0; right: 0; z-index: 300; flex-shrink: 0; }
+.topnav-left { display: flex; align-items: center; gap: 14px; }
+.hamburger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 4px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 1px; }
+.topnav-logo { display: flex; align-items: center; gap: 10px; }
+.topnav-logo img { height: 22px; width: auto; filter: brightness(0) invert(1); }
+.topnav-logo .site-name { color: #fff; font-size: 18px; font-weight: 400; }
+.topnav-right { margin-left: auto; color: #fff; font-size: 14px; }
+.blur-name { display: inline-block; width: 180px; height: 14px; background: rgba(255,255,255,0.35); border-radius: 2px; vertical-align: middle; margin: 0 4px; }
+
+.layout { display: flex; margin-top: 52px; flex: 1; min-height: calc(100vh - 52px - 44px); }
+
+.sidebar { width: 280px; background: #fff; flex-shrink: 0; box-shadow: 2px 0 6px rgba(0,0,0,0.08); overflow-y: auto; display: flex; flex-direction: column; transition: width 0.25s ease, margin-left 0.25s ease; }
+.sidebar.closed { width: 0; overflow: hidden; }
+.sidebar-item { display: flex; align-items: center; gap: 16px; padding: 14px 20px; font-size: 14px; color: #222; cursor: pointer; text-decoration: none; transition: background 0.12s; border-bottom: 1px solid #f0f0f0; }
+.sidebar-item:hover { background: #f0f5ff; color: #2a6496; }
+.sidebar-item .icon { width: 24px; height: 24px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #555; }
+.sidebar-item:hover .icon { color: #2a6496; }
+.sidebar-item svg { width: 22px; height: 22px; }
+
+.group-header { display: flex; align-items: center; gap: 16px; padding: 14px 20px; font-size: 14px; color: #222; cursor: pointer; border-bottom: 1px solid #f0f0f0; transition: background 0.12s; }
+.group-header:hover { background: #f0f5ff; }
+.group-header .label { flex: 1; }
+.group-header .chevron { font-size: 13px; color: #888; transition: transform 0.2s; }
+
+.sub-items { background: #fafafa; border-bottom: 1px solid #f0f0f0; }
+.sub-item { display: block; padding: 10px 20px 10px 60px; font-size: 13.5px; color: #333; cursor: pointer; text-decoration: none; transition: background 0.12s, color 0.12s; border-bottom: 1px solid #f0f0f0; }
+.sub-item:last-child { border-bottom: none; }
+.sub-item:hover { background: #e8f0fb; color: #2a6496; }
+.sub-item.highlight { color: #e07010; }
+.sub-item.highlight:hover { color: #c05800; }
+
+.main { flex: 1; padding: 20px; display: flex; flex-direction: column; }
+.content-card { background: #fff; border: 1px solid #ddd; box-shadow: 0 1px 4px rgba(0,0,0,0.07); padding: 0; overflow: hidden; }
+
+.banner { display: flex; align-items: stretch; border-bottom: 1px solid #e8e8e8; min-height: 130px; }
+.banner-img { width: 200px; flex-shrink: 0; overflow: hidden; background: linear-gradient(135deg, #8898a8 0%, #5a6a7a 40%, #3a4a5a 100%); }
+.banner-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.banner-text { padding: 24px 28px; display: flex; flex-direction: column; justify-content: center; }
+.banner-text h2 { font-size: 24px; font-weight: 400; color: #2a6496; line-height: 1.25; margin-bottom: 8px; }
+.banner-text h2 strong { font-weight: 700; }
+.banner-text p { font-size: 13px; color: #444; line-height: 1.5; }
+
+.content-body { padding: 20px 28px 28px; }
+.content-body h3 { font-size: 15px; font-weight: 700; color: #222; margin-bottom: 20px; }
+.ehs-logo-wrap { display: flex; justify-content: center; margin-bottom: 24px; }
+.ehs-logo-wrap svg { width: 160px; height: 160px; }
+.content-body .desc { font-size: 13.5px; color: #333; line-height: 1.65; max-width: 860px; }
+
+footer { background: #fff; border-top: 1px solid #ddd; padding: 10px 20px; font-size: 11.5px; color: #333; line-height: 1.5; }
+footer a { color: #2a6496; text-decoration: none; }
+footer a:hover { text-decoration: underline; }

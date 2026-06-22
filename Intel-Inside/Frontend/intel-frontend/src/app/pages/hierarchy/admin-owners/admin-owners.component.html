@@ -1,0 +1,66 @@
+<nav>
+  <a class="nav-logo-wrap" routerLink="/hierarchy" style="cursor:pointer;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Intel_logo_%282022%2C_white_blue%29.png/1280px-Intel_logo_%282022%2C_white_blue%29.png" alt="Intel" /></a>
+  <span class="app-title">HIERARCHY MANAGEMENT</span>
+  <ul class="nav-links">
+    <li class="dropdown"><span>CCB <span>▾</span></span>
+      <div class="dropdown-menu"><a routerLink="/hierarchy/ccb-history">CCB History</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">New CCB Request</a></div>
+    </li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Hierarchies</a></li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Search</a></li>
+    <li><a routerLink="/hierarchy/owners">Hierarchy Owners</a></li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Hierarchy Manager</a></li>
+    @if (isAdmin()) {
+      <li class="dropdown active"><span>Admin <span>▾</span></span>
+        <div class="dropdown-menu"><a routerLink="/hierarchy/admin/owners">Hierarchy Owners</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">User Management</a></div>
+      </li>
+    }
+  </ul>
+  <div class="nav-right"><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Get Help</a><a routerLink="/logout">Sign-Out</a></div>
+</nav>
+
+<div class="page-content fade-in">
+  <div class="panel">
+    <div class="panel-title">Hierarchy Owners</div>
+
+    <div class="toolbar">
+      <div class="select-hierarchy">
+        <select>
+          <option>Valid Server Configuration Hierarchy</option>
+          <option>Channel CPU Hierarchy</option>
+          <option>Channel Revenue Hierarchy</option>
+          <option>Market Use Case</option>
+          <option>Operating Systems</option>
+          <option>Valid Brand Hierarchy</option>
+        </select>
+      </div>
+      <input class="wwid-input" type="text" placeholder="Enter WWID to add owner" />
+      <button class="btn-add">Add User :</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:220px">Hierarchy Owner Name</th>
+            <th style="width:140px">WWID</th>
+            <th>Email</th>
+            <th style="width:120px">Click to Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (o of owners; track o.id; let i = $index) {
+            <tr>
+              <td>
+                <span class="blur-block" [style.width.px]="o.nameWidths[0]"></span>
+                <span class="blur-block" [style.width.px]="o.nameWidths[1]"></span>
+              </td>
+              <td><span class="blur-block" [style.width.px]="o.wwidWidth"></span></td>
+              <td>&#64;intel.com</td>
+              <td><button class="btn-delete" (click)="deleteOwner(i)">Delete</button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intel India Business Card</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      font-size: 14px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background-color: #003c71;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 0;
+      height: 52px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      padding: 0 20px 0 16px;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .header-left img.intel-logo {
+      height: 22px;
+      width: auto;
+    }
+
+    .header-left .divider {
+      width: 1px;
+      height: 28px;
+      background: rgba(255,255,255,0.35);
+    }
+
+    .header-left .app-name {
+      font-size: 16px;
+      font-weight: 400;
+      color: #fff;
+      letter-spacing: 0.01em;
+    }
+
+    /* Right nav */
+    .header-right {
+      display: flex;
+      align-items: stretch;
+      height: 100%;
+      gap: 0;
+    }
+
+    .header-right a {
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 400;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .header-right a:hover { background: rgba(255,255,255,0.1); }
+
+    .header-right a.active {
+      background: #00438a;
+      font-weight: 600;
+    }
+
+    .header-right .help-link { gap: 4px; }
+
+    /* IIO ops block */
+    .header-ops {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 20px;
+      border-left: 1px solid rgba(255,255,255,0.25);
+      height: 100%;
+    }
+
+    .iio-letters {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1;
+      color: #fff;
+    }
+
+    .iio-text {
+      font-size: 9px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: #fff;
+      text-transform: uppercase;
+      border-left: 1px solid rgba(255,255,255,0.35);
+      padding-left: 10px;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+
+    /* Top Filter Row */
+    .top-filters {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 2fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      position: relative;
+      background: #fff;
+    }
+    .input-group label {
+      position: absolute;
+      top: -8px;
+      left: 10px;
+      background: white;
+      padding: 0 4px;
+      font-size: 11px;
+      color: #666;
+      z-index: 1;
+    }
+    .input-group select,
+    .input-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      background: #fff;
+      color: #333;
+      appearance: auto;
+    }
+    .input-group select:focus,
+    .input-group input:focus { border-color: #0068B5; }
+
+    /* Notes */
+    .instructions {
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      color: #222;
+    }
+    .text-red { color: #c62828; font-weight: 700; }
+
+    /* Vendor dropdown */
+    .vendor-row {
+      margin-bottom: 20px;
+    }
+    .vendor-row select {
+      width: 250px;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 13px;
+      background: #fff;
+      outline: none;
+      appearance: auto;
+    }
+    .vendor-row select:focus { border-color: #0068B5; }
+
+    /* ── CARD CONTAINER ── */
+    .card-preview-container {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      border-top-right-radius: 55px;
+      padding: 35px 40px 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+
+    .address-block {
+      font-size: 13px;
+      color: #444;
+      line-height: 1.65;
+    }
+    .address-block .company-name {
+      font-weight: 700;
+      color: #111;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* Intel blue logo in card */
+    .intel-card-logo img {
+      height: 40px;
+      width: auto;
+    }
+
+    /* Phone rows */
+    .phone-grid {
+      display: grid;
+      grid-template-columns: 110px 1fr 60px;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .phone-grid select,
+    .phone-grid input {
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+    .phone-grid select:focus,
+    .phone-grid input:focus { border-color: #0068B5; }
+    .phone-label {
+      font-size: 13px;
+      color: #444;
+    }
+
+    /* Details grid */
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .details-grid input {
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 100%;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+    .details-grid input:focus { border-color: #0068B5; }
+    .details-grid input::placeholder { color: #888; }
+
+    /* CIN row */
+    .cin-row {
+      display: grid;
+      grid-template-columns: auto 1fr 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+    }
+    .cin-row label {
+      font-weight: 700;
+      font-size: 13px;
+      color: #222;
+      white-space: nowrap;
+    }
+    .cin-row input {
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+    .cin-row input:focus { border-color: #0068B5; }
+    .cin-row input::placeholder { color: #888; }
+
+    .website-text {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #444;
+    }
+
+    /* Official checkbox */
+    .official-check {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .official-check input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #0068B5;
+      flex-shrink: 0;
+    }
+    .official-check span {
+      color: #c0533a;
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    /* ── CONSENT ── */
+    .consent-section {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #444;
+      margin-bottom: 22px;
+    }
+    .consent-section input[type="checkbox"] {
+      margin-top: 3px;
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+    .consent-section a { color: #0068B5; text-decoration: none; }
+    .consent-section a:hover { text-decoration: underline; }
+
+    /* Submit */
+    .submit-btn-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .submit-btn {
+      background-color: #d6d6d6;
+      color: #888;
+      border: none;
+      padding: 10px 48px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      border-radius: 4px;
+      cursor: not-allowed;
+      transition: all 0.25s ease;
+    }
+    .submit-btn.active {
+      background-color: #0068B5;
+      color: white;
+      cursor: pointer;
+    }
+    .submit-btn.active:hover { background-color: #00529c; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: #666;
+      padding-bottom: 32px;
+      line-height: 1.7;
+    }
+    footer a { color: #0068B5; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-left">
+    <img class="intel-logo"
+         src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Intel_logo_%282022%2C_white_blue%29.png/1280px-Intel_logo_%282022%2C_white_blue%29.png"
+         alt="Intel" />
+    <div class="divider"></div>
+    <span class="app-name">India Business Card</span>
+  </div>
+
+  <div class="header-right">
+    <a href="#" class="active">Home</a>
+    <a href="#">My Requests</a>
+    <a href="#" class="help-link">Help ▾</a>
+    <div class="header-ops">
+      <span class="iio-letters">IIO</span>
+      <span class="iio-text">INTEL INDIA<br>OPERATIONS</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── MAIN ── -->
+<main>
+  <div class="top-filters">
+    <div class="input-group">
+      <label>Company*</label>
+      <select>
+        <option>Intel Technology India Pvt. Ltd.</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>Site*</label>
+      <select>
+        <option>SRR1</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <input type="text" placeholder="Purchase Order">
+    </div>
+    <div class="input-group">
+      <select>
+        <option>Search your Name/WWID</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <span class="text-red">Note:</span>
+    <strong>Employees who have chosen offsite as option should mandatorily give the registered office address and not the residence address. CIN no. is mandatory for all business cards. Mail room will contact the individual and then will ship the business cards to the residence.</strong><br>
+    <strong>Purchase Order number is required for the physical card request. Display customization available for E-Card.</strong><br>
+    <span class="text-red">*Fill the mandatory fields.</span>
+  </div>
+
+  <div class="vendor-row">
+    <select>
+      <option>Select Vendor*</option>
+    </select>
+  </div>
+
+  <!-- ── CARD PREVIEW ── -->
+  <div class="card-preview-container">
+    <div class="card-top-row">
+      <div class="address-block">
+        <span class="company-name">Intel Technology India Pvt. Ltd.</span>
+        Regd Address: #23-56 P, Outer Ring Road,<br>
+        Devarabeesanahalli, Varthur Hobli,<br>
+        Bellandur post,<br>
+        Bengaluru 560103, Karnataka, India
+      </div>
+      <div class="intel-card-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Intel-logo-2022.png"
+             alt="Intel" />
+      </div>
+    </div>
+
+    <div class="phone-grid">
+      <select><option>DialCd</option></select>
+      <input type="text">
+      <span class="phone-label">Cell*</span>
+    </div>
+    <div class="phone-grid">
+      <select><option>DialCd</option></select>
+      <input type="text">
+      <span class="phone-label">Direct</span>
+    </div>
+    <div class="phone-grid">
+      <select><option>DialCd</option></select>
+      <input type="text">
+      <span class="phone-label">Fax</span>
+    </div>
+
+    <div class="details-grid">
+      <input type="text" placeholder="Email*">
+      <input type="text" placeholder="Full Name*">
+      <input type="text" placeholder="LinkedIn">
+      <input type="text" placeholder="Title*">
+    </div>
+
+    <div class="cin-row">
+      <label>INTEL:</label>
+      <input type="text" value="CIN-U85110KA199PTC021606">
+      <input type="text" placeholder="Remarks : [ Qty: 100 * X ]">
+    </div>
+
+    <div class="website-text">www.intel.com</div>
+
+    <label class="official-check">
+      <input type="checkbox" checked>
+      <span>The information provided is correct and for official purpose.</span>
+    </label>
+  </div>
+
+  <!-- Consent -->
+  <div class="consent-section">
+    <input type="checkbox" id="privacyConsent">
+    <label for="privacyConsent">
+      This personal data would be processed to create your business card, in accordance with
+      <a href="#">Global Employee and Contingent Worker Privacy Notices</a>.
+      This data would be shared with Intel approved Vendor, who would be printing business card on behalf of Intel.
+      Your personal data would be deleted by vendor and from Intel systems after the request for business card has been fulfilled.
+      By checking this box, you provide your consent to process your personal data for the said purpose by Intel and vendor.
+      For any questions, please contact <a href="mailto:write2cs@intel.com">write2cs@intel.com</a>
+    </label>
+  </div>
+
+  <div class="submit-btn-container">
+    <button class="submit-btn" id="submitBtn" disabled>SUBMIT</button>
+  </div>
+
+  <footer>
+    This website is maintained by Intel S2P BI RUN team.<br>
+    For any feedback on the website please contact: <a href="#">S2P BI RUN</a><br>
+    Team Contact : <a href="#">S2P BI RUN</a> | <a href="#">Trademark</a> | <a href="#">Privacy</a> | <a href="#">Cookies</a>
+  </footer>
+</main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const consentCheckbox = document.getElementById('privacyConsent');
+    const submitBtn = document.getElementById('submitBtn');
+
+    consentCheckbox.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        submitBtn.disabled = false;
+        submitBtn.classList.add('active');
+      } else {
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('active');
+      }
+    });
+
+    submitBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert("Form submitted successfully!");
+    });
+  });
+</script>
+</body>
+</html>

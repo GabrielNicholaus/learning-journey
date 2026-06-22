@@ -1,0 +1,60 @@
+<nav>
+  <a class="nav-logo-wrap" routerLink="/hierarchy" style="cursor:pointer;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Intel_logo_%282022%2C_white_blue%29.png/1280px-Intel_logo_%282022%2C_white_blue%29.png" alt="Intel" /></a>
+  <span class="app-title">HIERARCHY MANAGEMENT</span>
+  <ul class="nav-links">
+    <li class="dropdown active"><span>CCB <span>▾</span></span>
+      <div class="dropdown-menu"><a routerLink="/hierarchy/ccb-history">CCB History</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">New CCB Request</a></div>
+    </li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Hierarchies</a></li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Search</a></li>
+    <li><a routerLink="/hierarchy/owners">Hierarchy Owners</a></li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Hierarchy Manager</a></li>
+    @if (isAdmin()) {
+      <li class="dropdown"><span>Admin <span>▾</span></span>
+        <div class="dropdown-menu"><a routerLink="/hierarchy/admin/owners">Hierarchy Owners</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">User Management</a></div>
+      </li>
+    }
+  </ul>
+  <div class="nav-right"><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Get Help</a><a routerLink="/logout">Sign-Out</a></div>
+</nav>
+
+<div class="page-content fade-in">
+  <div class="panel">
+    <div class="panel-header">
+      <h2>Request History</h2>
+      <button class="btn-default-view">Default View</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>EPM ID</th><th>EPM Name</th><th>Term Type</th><th>MM</th>
+            <th>New EPM ID</th><th>New EPM Name</th><th>New Term Type</th>
+            <th>Notes</th><th>Date</th><th>Type</th><th>Requestor</th>
+            <th>Task Id</th><th>Request Id</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of ccbRequests; track r.requestId) {
+            <tr>
+              <td class="center">{{ r.epmId }}</td>
+              <td>{{ r.epmName }}</td>
+              <td class="center">{{ r.termType }}</td>
+              <td class="center">{{ r.mm }}</td>
+              <td class="center">{{ r.newEpmId }}</td>
+              <td class="name-col">{{ r.newEpmName }}</td>
+              <td class="center">{{ r.newTermType }}</td>
+              <td class="notes-col">{{ r.notes }}</td>
+              <td class="center">{{ r.date }}</td>
+              <td class="center">{{ r.type }}</td>
+              <td>{{ r.requestor }}</td>
+              <td class="center">{{ r.taskId }}</td>
+              <td class="center">{{ r.requestId }}</td>
+              <td [class]="r.status === 'Approved' ? 'status-approved' : 'status-submitted'">{{ r.status }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

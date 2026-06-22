@@ -1,0 +1,109 @@
+<header class="topnav">
+  <div class="topnav-left">
+    <button class="hamburger" (click)="toggleSidebar()"><span></span><span></span><span></span></button>
+    <a class="topnav-logo" routerLink="/seims" style="cursor:pointer; text-decoration:none; color:inherit;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Intel_logo_%282022%2C_white_blue%29.png/1280px-Intel_logo_%282022%2C_white_blue%29.png" alt="Intel" />
+      <span class="site-name">SEIMS</span>
+    </a>
+  </div>
+  <div class="topnav-right">Welcome <span class="blur-name"></span>. Admin access</div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" [class.closed]="!sidebarOpen">
+    <a class="sidebar-item" routerLink="/seims"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/></svg></span>Home</a>
+    <a class="sidebar-item"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg></span>Search Products</a>
+    <div class="group-header" (click)="toggleReports()">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+      <span class="label">Reports</span>
+      <span class="chevron" [style.transform]="reportsOpen ? 'rotate(0)' : 'rotate(180deg)'">∧</span>
+    </div>
+    @if (reportsOpen) {
+      <div class="sub-items">
+        <a class="sub-item highlight" routerLink="/seims/product-creation">Product Creation</a>
+        <a class="sub-item highlight">Product Deletion</a>
+        <a class="sub-item active" routerLink="/seims/document-creation">Document Creation</a>
+        <a class="sub-item">Document Deletion</a>
+        <a class="sub-item">Ingredient Creation</a>
+        <a class="sub-item">Ingredient Deletion</a>
+        <a class="sub-item highlight">Product Missing NDA</a>
+      </div>
+    }
+    <a class="sidebar-item" routerLink="/logout"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Sign Out</a>
+  </nav>
+
+  <main class="main fade-in">
+    <div class="results-banner">
+      <h2>Document Creation Report</h2>
+      <p>Click the "Print" button to print the results. Click the "Export To Excel" button to view the search results in Excel.</p>
+    </div>
+
+    <div class="content-card">
+      <div class="toolbar">
+        <div class="toolbar-btns">
+          <button class="btn-tool">Copy</button><button class="btn-tool">CSV</button>
+          <button class="btn-tool">Excel</button><button class="btn-tool">Print</button>
+        </div>
+        <div class="search-box"><span>Search:</span><input type="text" /></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Document Name <span class="sort-icon">▲</span></th>
+              <th>Created By <span class="sort-icon">⇅</span></th>
+              <th>Creation Date <span class="sort-icon">⇅</span></th>
+              <th>Attached Products <span class="sort-icon">⇅</span></th>
+              <th>NDA Number <span class="sort-icon">⇅</span></th>
+              <th>Company <span class="sort-icon">⇅</span></th>
+              <th>Active</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (r of rows; track r.id) {
+              <tr>
+                <td>
+                  @for (w of r.nameWidths; track w) {
+                    <span class="blur-block" [style.width.px]="w"></span>
+                  }
+                </td>
+                <td>
+                  @for (w of r.createdBy; track w) {
+                    <span class="blur-block" [style.width.px]="w"></span>
+                  }
+                </td>
+                <td class="date-cell">{{ r.date }}</td>
+                <td><span class="blur-block" style="width:50px"></span></td>
+                <td><span class="blur-block" style="width:50px"></span><span class="blur-block" style="width:30px"></span></td>
+                <td><span class="blur-block" style="width:40px"></span></td>
+                <td>{{ r.active }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination-row">
+        <span>Showing 1 to 10 of 8,247 entries</span>
+        <div class="pagination-btns">
+          <button class="page-btn">Previous</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">4</button>
+          <button class="page-btn">5</button>
+          <span style="padding:5px 6px;color:#555">...</span>
+          <button class="page-btn">825</button>
+          <button class="page-btn">Next</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <strong>IMPORTANT:</strong> Use of this site indicates assent to our
+  <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Terms of Use</a> | <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Trademarks</a> | <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Cookies</a> |
+  <a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Privacy</a> | © Intel Corporation
+</footer>

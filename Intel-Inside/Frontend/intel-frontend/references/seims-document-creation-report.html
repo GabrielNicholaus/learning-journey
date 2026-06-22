@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEIMS – Document Creation Report</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Arial', 'Helvetica Neue', sans-serif;
+      background: #e8ecf0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      background: #3777bc;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+    }
+    .topnav-left { display: flex; align-items: center; gap: 14px; }
+    .hamburger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 1px; }
+    .topnav-logo { display: flex; align-items: center; gap: 10px; }
+    .topnav-logo img { height: 22px; width: auto; filter: brightness(0) invert(1); }
+    .topnav-logo .site-name { color: #fff; font-size: 18px; font-weight: 400; }
+    .topnav-right { margin-left: auto; color: #fff; font-size: 14px; }
+    .topnav-right .blur-name { display: inline-block; width: 180px; height: 14px; background: rgba(255,255,255,0.35); border-radius: 2px; vertical-align: middle; margin: 0 4px; }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; margin-top: 52px; flex: 1; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: 280px; background: #fff; flex-shrink: 0;
+      box-shadow: 2px 0 6px rgba(0,0,0,0.08);
+      overflow-y: auto; display: flex; flex-direction: column;
+      transition: width 0.25s ease;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 20px; font-size: 14px; color: #222;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.12s; border-bottom: 1px solid #f0f0f0;
+    }
+    .sidebar-item:hover { background: #f0f5ff; color: #2a6496; }
+    .sidebar-item .icon { width: 24px; height: 24px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #555; }
+    .sidebar-item:hover .icon { color: #2a6496; }
+    .sidebar-item svg { width: 22px; height: 22px; }
+    .group-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 20px; font-size: 14px; color: #222;
+      cursor: pointer; border-bottom: 1px solid #f0f0f0; transition: background 0.12s;
+    }
+    .group-header:hover { background: #f0f5ff; }
+    .group-header .label { flex: 1; }
+    .group-header .chevron { font-size: 13px; color: #888; transition: transform 0.2s; }
+    .group-header:not(.open) .chevron { transform: rotate(180deg); }
+    .sub-items { background: #fafafa; border-bottom: 1px solid #f0f0f0; }
+    .sub-items.collapsed { display: none; }
+    .sub-item {
+      display: block; padding: 10px 20px 10px 60px; font-size: 13.5px;
+      color: #333; cursor: pointer; text-decoration: none;
+      transition: background 0.12s, color 0.12s; border-bottom: 1px solid #f0f0f0;
+    }
+    .sub-item:last-child { border-bottom: none; }
+    .sub-item:hover { background: #e8f0fb; color: #2a6496; }
+    .sub-item.highlight { color: #e07010; }
+    .sub-item.active { color: #2a6496; font-weight: 700; background: #eef4ff; }
+
+    /* ── MAIN ── */
+    .main { flex: 1; padding: 16px 20px 40px; min-width: 0; }
+
+    .results-banner {
+      background: linear-gradient(135deg, #3777bc 0%, #2a5a9a 100%);
+      padding: 20px 24px 18px;
+      margin-bottom: 16px;
+      border-radius: 2px;
+    }
+    .results-banner h2 { color: #fff; font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+    .results-banner p { color: #d0e4f8; font-size: 13px; line-height: 1.5; }
+
+    .content-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      padding: 16px 20px 20px;
+    }
+
+    .toolbar {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px; flex-wrap: wrap; gap: 10px;
+    }
+    .toolbar-btns { display: flex; gap: 4px; }
+    .btn-tool {
+      padding: 5px 14px; border: 1px solid #aaa; background: #fff;
+      font-size: 13px; cursor: pointer; border-radius: 2px;
+      font-family: inherit; color: #333; transition: background 0.12s;
+    }
+    .btn-tool:hover { background: #f0f0f0; }
+    .search-box { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #333; }
+    .search-box input {
+      padding: 5px 8px; border: 1px solid #999;
+      font-size: 13px; font-family: inherit; width: 180px; outline: none;
+    }
+    .search-box input:focus { border-color: #3777bc; }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+    thead th {
+      padding: 10px 10px 8px;
+      text-align: left; font-weight: 700; color: #222;
+      font-size: 13px; border-bottom: 2px solid #333;
+      white-space: nowrap; cursor: pointer; user-select: none;
+    }
+    thead th .sort { font-size: 10px; color: #888; margin-left: 3px; }
+
+    tbody tr { border-bottom: 1px solid #e8e8e8; }
+    tbody tr:hover { background: #f5f8ff; }
+    tbody td {
+      padding: 10px 10px; vertical-align: middle;
+      font-size: 13px; color: #333;
+    }
+
+    .blur-block {
+      display: inline-block; height: 13px; border-radius: 2px;
+      vertical-align: middle; margin-right: 3px;
+    }
+
+    .doc-type { font-size: 13px; color: #222; white-space: nowrap; }
+    .date-cell { white-space: nowrap; font-size: 12.5px; color: #444; }
+
+    /* ── PAGINATION ── */
+    .pagination-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 12px 0 4px;
+      border-top: 2px solid #333;
+      font-size: 13px; color: #333;
+      flex-wrap: wrap; gap: 8px;
+    }
+    .pagination-btns { display: flex; align-items: center; gap: 3px; }
+    .page-btn {
+      padding: 5px 11px; border: 1px solid #ccc; background: #fff;
+      font-size: 13px; cursor: pointer; font-family: inherit; color: #333;
+      border-radius: 2px; transition: background 0.12s;
+      min-width: 34px; text-align: center;
+    }
+    .page-btn:hover { background: #f0f0f0; }
+    .page-btn.active { background: #3777bc; color: #fff; border-color: #3777bc; }
+    .page-btn.nav { padding: 5px 14px; }
+
+    .scroll-hint { display: flex; margin-top: 8px; background: #e0e0e0; height: 10px; border-radius: 2px; overflow: hidden; }
+    .scroll-thumb { width: 60%; background: #aaa; border-radius: 2px; }
+
+    /* ── FOOTER ── */
+    footer { background: #fff; border-top: 1px solid #ddd; padding: 10px 20px; font-size: 11.5px; color: #333; line-height: 1.5; }
+    footer a { color: #2a6496; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- TOPNAV -->
+  <header class="topnav">
+    <div class="topnav-left">
+      <button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
+      <div class="topnav-logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Intel_logo_%282022%2C_white_blue%29.png/1280px-Intel_logo_%282022%2C_white_blue%29.png" alt="Intel" />
+        <span class="site-name">SEIMS</span>
+      </div>
+    </div>
+    <div class="topnav-right">Welcome <span class="blur-name"></span>. Admin access</div>
+  </header>
+
+  <div class="layout" id="layout">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+      <a href="#" class="sidebar-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></span>Home
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/><line x1="20.5" y1="20.5" x2="23" y2="23"/></svg></span>Search Products
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M17 14v6m-3-3h6"/></svg></span>Search IPN
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M6 21c0-3.314 2.686-5 6-5s6 1.686 6 5"/></svg></span>Intel Contacts
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></span>Notification Subscriptions
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M6 21c0-3.314 2.686-5 6-5s6 1.686 6 5"/><path d="M18 3l2 2-2 2"/></svg></span>Supplier Company Association
+      </a>
+
+      <div class="group-header open" id="relatedHeader" onclick="toggleGroup('related','relatedHeader')">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+        <span class="label">Related Links</span><span class="chevron">∧</span>
+      </div>
+      <div class="sub-items" id="related">
+        <a href="#" class="sub-item">SEIMS - EHS Main Page</a>
+        <a href="#" class="sub-item">SEIMS - End User Training</a>
+        <a href="#" class="sub-item">SEIMS - Administrator Training</a>
+      </div>
+
+      <div class="group-header open" id="reportsHeader" onclick="toggleGroup('reports','reportsHeader')">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg></span>
+        <span class="label">Reports</span><span class="chevron">∧</span>
+      </div>
+      <div class="sub-items" id="reports">
+        <a href="#" class="sub-item highlight">Product Creation</a>
+        <a href="#" class="sub-item highlight">Product Deletion</a>
+        <a href="#" class="sub-item active">Document Creation</a>
+        <a href="#" class="sub-item">Document Deletion</a>
+        <a href="#" class="sub-item">Ingredient Creation</a>
+        <a href="#" class="sub-item">Ingredient Deletion</a>
+        <a href="#" class="sub-item highlight">Product Missing NDA</a>
+      </div>
+
+      <a href="#" class="sidebar-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></span>Supplier.intel.com
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Sign Out
+      </a>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="results-banner">
+        <h2>Search Results</h2>
+        <p>Click the "Print" button to print the results. Click the "Export To Excel" button to view the search results in Excel.</p>
+      </div>
+
+      <div class="content-card">
+        <div class="toolbar">
+          <div class="toolbar-btns">
+            <button class="btn-tool">Copy</button>
+            <button class="btn-tool">CSV</button>
+            <button class="btn-tool">Excel</button>
+            <button class="btn-tool">Print</button>
+          </div>
+          <div class="search-box">
+            <span>Search:</span>
+            <input type="text" id="searchInput" oninput="filterTable()" />
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table id="dataTable">
+            <thead>
+              <tr>
+                <th style="min-width:100px">Document<br>type <span class="sort">▲</span></th>
+                <th style="min-width:110px">Description <span class="sort">⇅</span></th>
+                <th style="min-width:160px">File Name <span class="sort">⇅</span></th>
+                <th style="min-width:95px">Creation<br>Date <span class="sort">⇅</span></th>
+                <th style="min-width:120px">Product<br>Name <span class="sort">⇅</span></th>
+                <th style="min-width:130px">Supplier<br>Contact <span class="sort">⇅</span></th>
+                <th style="min-width:100px">NDA<br>Number <span class="sort">⇅</span></th>
+                <th style="min-width:110px">Company <span class="sort">⇅</span></th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="pagination-row">
+          <span id="showing-text">Showing 1 to 10 of 14,250 entries</span>
+          <div class="pagination-btns" id="pagination"></div>
+        </div>
+        <div class="scroll-hint"><div class="scroll-thumb"></div></div>
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <strong>IMPORTANT:</strong> Use of this site indicates assent to our
+    <a href="#">Terms of Use</a> | <a href="#">Trademarks</a> | <a href="#">Cookies</a> |
+    <a href="#">Privacy</a> | <a href="#">Employee/Contingent Worker Privacy</a> | © Intel Corporation
+  </footer>
+
+  <script>
+    // Hamburger
+    document.getElementById('hamburgerBtn').addEventListener('click', () => {
+      const s = document.getElementById('sidebar');
+      const open = s.style.width !== '0px';
+      s.style.width = open ? '0px' : '280px';
+      s.style.overflow = open ? 'hidden' : 'auto';
+    });
+
+    // Accordion
+    function toggleGroup(gId, hId) {
+      const g = document.getElementById(gId), h = document.getElementById(hId);
+      const isOpen = !g.classList.contains('collapsed');
+      g.classList.toggle('collapsed', isOpen);
+      h.classList.toggle('open', !isOpen);
+    }
+
+    // Palettes
+    const P = [
+      ['#b8c8d8','#90a8c0','#c8d8e8'],['#c8a898','#d0b8b0','#b09080'],
+      ['#a8c0a0','#c0d0b8','#88a880'],['#c8c0a0','#d8d0b0','#b0a880'],
+      ['#b0b8d0','#c0c8e0','#9098b8'],['#d0a8a0','#e0b8b0','#b08880'],
+      ['#a8b8c8','#b8c8d8','#8898b0'],['#c8b8a0','#d8c8b0','#b0a080'],
+      ['#b8a8c0','#c8b8d0','#a090a8'],['#a0c0b8','#b0d0c0','#80a898'],
+    ];
+
+    function bb(w, pal, idx=0) {
+      return `<span class="blur-block" style="width:${w}px;background:${pal[idx%pal.length]}"></span>`;
+    }
+
+    // Row data
+    const rows = [
+      { type:'CPIF',            date:'9/10/07,<br>3:11 PM' },
+      { type:'CPIF',            date:'3/2/10,<br>8:37 PM'  },
+      { type:'CPIF',            date:'8/12/11,<br>7:34 PM'  },
+      { type:'CPIF',            date:'6/19/14,<br>4:30 PM'  },
+      { type:'CPIF',            date:'8/14/15,<br>6:35 PM'  },
+      { type:'CPIF',            date:'8/14/15,<br>6:37 PM'  },
+      { type:'CPIF',            date:'5/13/20,<br>8:54 PM'  },
+      { type:'EHS Data\nMatrix', date:'7/31/09,<br>5:57 PM' },
+      { type:'EHS Data\nMatrix', date:'8/24/09,<br>6:01 PM' },
+      { type:'EHS Data\nMatrix', date:'3/2/10,<br>8:37 PM'  },
+    ];
+
+    // Desc widths (some rows have desc, some empty)
+    const descW  = [[],[30,40],[20,20],[],[30,20],[20],[],[40,30,20],[30],[40,30,20]];
+    // File name widths
+    const fileW  = [[70,60,50,60],[60,50,50],[70,50,50,40],[70,60,50],[40,20,30],[20,50],[50,40],[70,60,50,40],[40],[80,50,40,40]];
+    // Product name widths
+    const prodW  = [[50,30,40],[50,30],[50,30],[40,20],[40,20],[40,20],[40,20,30],[20,20],[30,20],[40,20,20]];
+    // Supplier widths (often two-line)
+    const suppW  = [[60,50,40],[50,40],[50,40,20],[50,40,20],[50,40],[50,40],[50,40,20],[30,20],[40,20],[50,30,20]];
+    // NDA widths
+    const ndaW   = [[50,30],[40],[50,30],[50,30],[20],[20],[50,20],[30],[30],[30]];
+    // Company widths (often multi-line)
+    const compW  = [[50,40],[40,30,30],[30,40],[30,40],[20,30,20],[30,20],[30,20,30],[60,30,30,20],[30,20],[50,30,20]];
+
+    const tbody = document.getElementById('tableBody');
+
+    rows.forEach((r, i) => {
+      const pal  = P[i % P.length];
+      const epal = P[(i+3) % P.length];
+      const npal = P[(i+6) % P.length];
+      const cpal = P[(i+2) % P.length];
+
+      const descHtml  = descW[i].length  ? descW[i].map((w,j)  => bb(w,pal,j)).join('') : '';
+      const fileHtml  = fileW[i].map((w,j)  => bb(w,pal,j)).join('');
+      const prodLines = [prodW[i].slice(0,2).map((w,j) => bb(w,pal,j)).join(''),
+                         prodW[i].slice(2).map((w,j)   => bb(w,pal,j)).join('')].filter(Boolean).join('<br>');
+      const suppLines = [suppW[i].slice(0,2).map((w,j) => bb(w,epal,j)).join(''),
+                         suppW[i].slice(2).map((w,j)   => bb(w,epal,j)).join('')].filter(Boolean).join('<br>');
+      const ndaHtml   = ndaW[i].map((w,j) => bb(w,npal,j)).join('');
+      const compLines = [compW[i].slice(0,2).map((w,j) => bb(w,cpal,j)).join(''),
+                         compW[i].slice(2).map((w,j)   => bb(w,cpal,j)).join('')].filter(Boolean).join('<br>');
+
+      const typeLabel = r.type.replace('\n','<br>');
+
+      tbody.innerHTML += `
+        <tr>
+          <td class="doc-type">${typeLabel}</td>
+          <td>${descHtml}</td>
+          <td>${fileHtml}</td>
+          <td class="date-cell">${r.date}</td>
+          <td>${prodLines}</td>
+          <td>${suppLines}</td>
+          <td>${ndaHtml}</td>
+          <td>${compLines}</td>
+        </tr>`;
+    });
+
+    // Pagination
+    function buildPagination() {
+      const pages = [1,2,3,4,5,'...',1425];
+      let html = `<button class="page-btn nav">Previous</button>`;
+      pages.forEach(p => {
+        if (p==='...') html += `<span style="padding:5px 6px;color:#555">...</span>`;
+        else html += `<button class="page-btn${p===1?' active':''}">${p}</button>`;
+      });
+      html += `<button class="page-btn nav">Next</button>`;
+      document.getElementById('pagination').innerHTML = html;
+    }
+    buildPagination();
+
+    function filterTable() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('#tableBody tr').forEach(r => {
+        r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

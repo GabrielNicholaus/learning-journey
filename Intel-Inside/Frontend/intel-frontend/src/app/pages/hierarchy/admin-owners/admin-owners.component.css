@@ -1,0 +1,43 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:host { display: flex; flex-direction: column; font-family: 'Arial', 'Helvetica Neue', sans-serif; min-height: 100vh; background: #f0f0f0; font-size: 13px; color: #222; }
+
+nav { background: #fff; display: flex; align-items: center; height: 60px; padding: 0 20px 0 0; border-bottom: 2px solid #0054ae; z-index: 100; flex-shrink: 0; }
+.nav-logo-wrap { background: #0054ae; display: flex; align-items: center; justify-content: center; padding: 0 16px; height: 100%; min-width: 80px; flex-shrink: 0; margin-right: 4px; }
+.nav-logo-wrap img { height: 26px; width: auto; }
+.app-title { color: #0054ae; font-weight: 700; font-size: 13px; white-space: nowrap; padding: 0 16px; border-right: 1px solid #ccc; margin-right: 4px; display: flex; align-items: center; align-self: stretch; }
+.nav-links { display: flex; align-items: stretch; list-style: none; height: 100%; }
+.nav-links li { display: flex; align-items: center; position: relative; height: 100%; }
+.nav-links li a, .nav-links li > span { display: flex; align-items: center; height: 100%; padding: 0 14px; color: #333; text-decoration: none; font-size: 13px; white-space: nowrap; cursor: pointer; text-transform: uppercase; gap: 4px; border-bottom: 3px solid transparent; }
+.nav-links li a:hover, .nav-links li > span:hover { color: #0054ae; }
+.nav-links li.active > a, .nav-links li.active > span { color: #0054ae; font-weight: 600; border-bottom: 3px solid #0054ae; }
+.dropdown { position: relative; }
+.dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; min-width: 180px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); z-index: 200; border-top: 2px solid #0054ae; }
+.dropdown-menu a { display: block; padding: 10px 16px; color: #333; font-size: 13px; text-decoration: none; text-transform: none; border-bottom: none !important; }
+.dropdown-menu a:hover { background: #f0f0f0; color: #0054ae; }
+.dropdown:hover .dropdown-menu { display: block; }
+.nav-right { margin-left: auto; display: flex; align-items: center; height: 100%; }
+.nav-right a { display: flex; align-items: center; height: 100%; padding: 0 16px; color: #333; font-size: 13px; text-decoration: none; text-transform: uppercase; border-bottom: 3px solid transparent; }
+.nav-right a:hover { color: #0054ae; }
+
+.page-content { flex: 1; padding: 16px 20px 40px; }
+.panel { background: #fff; border: 1px solid #ddd; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 14px 16px 24px; }
+.panel-title { font-size: 14px; font-weight: 600; color: #222; margin-bottom: 16px; }
+
+.toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.select-hierarchy select { appearance: none; background: #2a6496; color: #fff; border: none; padding: 8px 36px 8px 14px; font-size: 13px; font-weight: 500; cursor: pointer; border-radius: 3px; min-width: 260px; font-family: inherit; outline: none; }
+.wwid-input { flex: 1; max-width: 360px; padding: 8px 12px; border: 1px solid #ccc; border-radius: 3px; font-size: 13px; font-family: inherit; color: #888; outline: none; }
+.wwid-input:focus { border-color: #0054ae; color: #333; }
+.btn-add { background: #2e8b4e; color: #fff; border: none; padding: 8px 18px; font-size: 13px; font-weight: 600; border-radius: 3px; cursor: pointer; white-space: nowrap; }
+.btn-add:hover { background: #246e3e; }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+thead tr { border-bottom: 2px solid #ccc; }
+thead th { padding: 10px 14px; text-align: left; font-weight: 700; font-size: 13px; color: #0054ae; white-space: nowrap; }
+tbody tr { border-bottom: 1px solid #e8e8e8; }
+tbody tr:hover { background: #f5f8ff; }
+tbody td { padding: 9px 14px; vertical-align: middle; font-size: 13px; color: #333; }
+
+.blur-block { display: inline-block; height: 13px; border-radius: 2px; vertical-align: middle; background: linear-gradient(90deg, #cdd8e4 0%, #b4c4d4 40%, #cdd8e4 100%); margin-right: 3px; }
+.btn-delete { background: #c0392b; color: #fff; border: none; padding: 6px 18px; font-size: 12px; font-weight: 600; border-radius: 3px; cursor: pointer; }
+.btn-delete:hover { background: #a93226; }

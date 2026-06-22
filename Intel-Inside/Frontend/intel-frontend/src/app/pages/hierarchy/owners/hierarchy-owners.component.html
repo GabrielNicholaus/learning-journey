@@ -1,0 +1,52 @@
+<nav>
+  <a class="nav-logo-wrap" routerLink="/hierarchy" style="cursor:pointer;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Intel_logo_%282022%2C_white_blue%29.png/1280px-Intel_logo_%282022%2C_white_blue%29.png" alt="Intel" /></a>
+  <span class="app-title">HIERARCHY MANAGEMENT</span>
+  <ul class="nav-links">
+    <li class="dropdown"><span>CCB <span>▾</span></span>
+      <div class="dropdown-menu"><a routerLink="/hierarchy/ccb-history">CCB History</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">New CCB Request</a></div>
+    </li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Hierarchies</a></li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Search</a></li>
+    <li class="active"><a routerLink="/hierarchy/owners">Hierarchy Owners</a></li>
+    <li><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Hierarchy Manager</a></li>
+    @if (isAdmin()) {
+      <li class="dropdown"><span>Admin <span>▾</span></span>
+        <div class="dropdown-menu"><a routerLink="/hierarchy/admin/owners">Hierarchy Owners</a><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">User Management</a></div>
+      </li>
+    }
+  </ul>
+  <div class="nav-right"><a href="javascript:void(0)" title="Unavailable and cant be clicked" style="cursor: not-allowed;">Get Help</a><a routerLink="/logout">Sign-Out</a></div>
+</nav>
+
+<div class="page-content fade-in">
+  <div class="panel">
+    <div class="panel-title">Hierarchy Owners</div>
+    <div class="hierarchy-list">
+      @for (h of hierarchies; track h.name) {
+        <div class="hierarchy-row">
+          <div class="hierarchy-row-header">
+            <div class="hierarchy-label" (click)="toggle(h)">
+              <span class="toggle-icon" [style.transform]="h.expanded ? 'rotate(90deg)' : 'rotate(0deg)'">›</span>
+              {{ h.name }}
+            </div>
+            <div class="hierarchy-right-empty"></div>
+          </div>
+          @if (h.expanded && h.owners.length > 0) {
+            <table class="owners-table">
+              <thead><tr><th>Hierarchy Owner Name</th><th>WWID</th><th>Email</th></tr></thead>
+              <tbody>
+                @for (o of h.owners; track o.wwid) {
+                  <tr>
+                    <td><span class="blur-block" [style.width.px]="80"></span> <span class="blur-block" [style.width.px]="50"></span></td>
+                    <td><span class="blur-block" [style.width.px]="50"></span></td>
+                    <td>{{ o.email }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>
